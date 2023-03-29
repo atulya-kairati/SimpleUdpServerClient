@@ -7,19 +7,22 @@ import java.util.Scanner;
 public class UdpClient {
 
     private final DatagramSocket datagramSocket;
-    private final InetAddress inetAddress;
+    private final InetAddress serverIp;
+    private final int serverPort;
 
 
-    public UdpClient(DatagramSocket datagramSocket, InetAddress inetAddress) {
+    public UdpClient(DatagramSocket datagramSocket, InetAddress serverIp, int serverPort) {
         this.datagramSocket = datagramSocket;
-        this.inetAddress = inetAddress;
+        this.serverIp = serverIp;
+        this.serverPort = serverPort;
     }
 
     public void sendThenReceive(String msg) throws IOException {
 
         final byte[] buffer = msg.getBytes();
 
-        final DatagramPacket packet = new DatagramPacket(buffer, buffer.length, this.inetAddress, 6969); // destination port and ip
+
+        final DatagramPacket packet = new DatagramPacket(buffer, buffer.length, this.serverIp, serverPort); // destination port and ip
         this.datagramSocket.send(packet);
 
         // After this we reuse the packet var to listen for echo from server
@@ -39,7 +42,8 @@ public class UdpClient {
 //        final DatagramSocket datagramSocket = new DatagramSocket();
 
         final InetAddress serverIp = InetAddress.getLocalHost(); // since server is local
-        final UdpClient client = new UdpClient(datagramSocket, serverIp);
+        final int serverPort = 6969;
+        final UdpClient client = new UdpClient(datagramSocket, serverIp, serverPort);
 
         final Scanner in = new Scanner(System.in);
 

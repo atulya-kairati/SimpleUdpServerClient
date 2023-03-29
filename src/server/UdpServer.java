@@ -51,8 +51,8 @@ public class UdpServer {
     public static void main(String[] args) {
 
         try {
-
-            DatagramSocket datagramSocket = new DatagramSocket(6969);
+            final int serverPort = 6969; // Server will listen on this port
+            DatagramSocket datagramSocket = new DatagramSocket(serverPort); // will listen on random port if not specified and client will not know where to send packets
             UdpServer server = new UdpServer(datagramSocket);
             server.receiveThenSend();
 
